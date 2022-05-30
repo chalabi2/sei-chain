@@ -13,7 +13,7 @@ func (k Keeper) SetShortBook(ctx sdk.Context, contractAddr string, shortBook typ
 	store.Set(GetKeyForShortBook(shortBook), b)
 }
 
-func (k Keeper) GetShortBookByPrice(ctx sdk.Context, contractAddr string, price uint64, priceDenom string, assetDenom string) (val types.ShortBook, found bool) {
+func (k Keeper) GetShortBookByPrice(ctx sdk.Context, contractAddr string, price sdk.Dec, priceDenom types.Denom, assetDenom types.Denom) (val types.ShortBook, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.OrderBookPrefix(false, contractAddr, priceDenom, assetDenom))
 	b := store.Get(GetKeyForPrice(price))
 	if b == nil {
@@ -23,7 +23,7 @@ func (k Keeper) GetShortBookByPrice(ctx sdk.Context, contractAddr string, price 
 	return val, true
 }
 
-func (k Keeper) RemoveShortBookByPrice(ctx sdk.Context, contractAddr string, price uint64, priceDenom string, assetDenom string) {
+func (k Keeper) RemoveShortBookByPrice(ctx sdk.Context, contractAddr string, price sdk.Dec, priceDenom types.Denom, assetDenom types.Denom) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.OrderBookPrefix(false, contractAddr, priceDenom, assetDenom))
 	store.Delete(GetKeyForPrice(price))
 }
@@ -44,7 +44,7 @@ func (k Keeper) GetAllShortBook(ctx sdk.Context, contractAddr string) (list []ty
 	return
 }
 
-func (k Keeper) GetAllShortBookForPair(ctx sdk.Context, contractAddr string, priceDenom string, assetDenom string) (list []types.OrderBook) {
+func (k Keeper) GetAllShortBookForPair(ctx sdk.Context, contractAddr string, priceDenom types.Denom, assetDenom types.Denom) (list []types.OrderBook) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.OrderBookPrefix(false, contractAddr, priceDenom, assetDenom))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
