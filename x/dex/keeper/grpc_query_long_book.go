@@ -25,7 +25,7 @@ func (k Keeper) LongBookAll(c context.Context, req *types.QueryAllLongBookReques
 
 	pageRes, err := query.Paginate(longBookStore, req.Pagination, func(key []byte, value []byte) error {
 		var longBook types.LongBook
-		if err := k.cdc.Unmarshal(value, &longBook); err != nil {
+		if err := k.Cdc.Unmarshal(value, &longBook); err != nil {
 			return err
 		}
 

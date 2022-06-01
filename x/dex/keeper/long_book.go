@@ -14,7 +14,7 @@ func (k Keeper) SetLongBook(ctx sdk.Context, contractAddr string, longBook types
 			true, contractAddr, longBook.Entry.PriceDenom, longBook.Entry.AssetDenom,
 		),
 	)
-	b := k.cdc.MustMarshal(&longBook)
+	b := k.Cdc.MustMarshal(&longBook)
 	store.Set(GetKeyForLongBook(longBook), b)
 }
 
@@ -29,7 +29,7 @@ func (k Keeper) GetLongBookByPrice(ctx sdk.Context, contractAddr string, price s
 	if b == nil {
 		return val, false
 	}
-	k.cdc.MustUnmarshal(b, &val)
+	k.Cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
@@ -52,7 +52,7 @@ func (k Keeper) GetAllLongBook(ctx sdk.Context, contractAddr string) (list []typ
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.LongBook
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		k.Cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 
@@ -67,7 +67,7 @@ func (k Keeper) GetAllLongBookForPair(ctx sdk.Context, contractAddr string, pric
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.LongBook
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		k.Cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, &val)
 	}
 
